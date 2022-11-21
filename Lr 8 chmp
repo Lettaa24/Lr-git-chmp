@@ -1,0 +1,54 @@
+import numpy as np
+from math import factorial
+import matplotlib.pyplot as plt
+
+x=[3.50,3.55,3.60,3.65,3.70,3.75,3.80,3.85,3.90,3.95,4.00]
+y=[33.1154, 34.8133, 36.5982, 38.4747, 40.4473, 42.5211, 44.7012, 46.9931, 49.4024, 51.9354, 54.5982]
+h = x[1] - x[0]
+x1=3.5
+x2=3.9
+q=(x1 - x[0])/h
+q1 = (x2-x[-1])/h
+
+def n(y,j): #обчислення кінцевих різниць
+    mas=[]
+    for i in range(len(y)):
+        mas.append(y[i] - y[i-1])
+    mas.pop(0)
+    if j == 1:
+        return mas
+    else:
+        j-=1
+        return n(mas, j)
+
+#Перша інтерполяційна формула Ньютона
+
+s_1 = y[0]+q*n(y,1)[0]+q*(q-1)*n(y,2)[0]/factorial(2)
+s_2 = q*(q-1)*(q-2)*n(y,3)[0]/factorial(3)
+s_3 = q*(q-1)*(q-2)*(q-3)*n(y,4)[0]/factorial(4)
+s_4 = q*(q-1)*(q-2)*(q-3)*(q-4)*n(y,5)[0]/factorial(5)
+n_1 = s_1 + s_2 + s_3 + s_4
+
+print ('The value of a function at a point x1=', x1, 'using Newton*s First Interpolation Formula', round(n_1,5))
+
+#Друга інтерполяційна формула Ньютона
+
+s_21 = y[5]+q1*n(y,1)[4]+q1*(q1+1)*n(y,2)[3]/factorial(2)
+s_22 = q1*(q1+1)*(q1+2)*n(y,3)[2]/factorial(3)
+s_23 = q1*(q1+1)*(q1+2)*(q1+3)*n(y,4)[1]/factorial(4)
+s_24 = q1*(q1+1)*(q1+2)*(q1+3)*(q1+4)*n(y,5)[0]/factorial(5)
+n_2 = s_21 + s_22 + s_23 + s_24
+
+print ('The value of a function at a point x1=', x1, 'using Newton*s Second Interpolation Formula', round(n_2,5))
+
+#Графік
+
+
+plot_tuple = ((3.50,3.55,3.60,3.65,3.70,3.75,3.80,3.85,3.90,3.95,4.00), (33.1154, 34.8133, 36.5982, 38.4747, 40.4473, 42.5211, 44.7012, 46.9931, 49.4024, 51.9354, 54.5982),'o-r')
+plt.plot(*plot_tuple)
+plt.xticks([3.4, 3.5, 3.55,3.60,3.65,3.70,3.75,3.80,3.85,3.90,3.95,4.00,4.1])
+plt.yticks([33, 35, 37, 39, 41, 43, 45, 47, 49, 51, 53, 55 ])
+plt.title('Графік')
+plt.grid(True)
+plt.show()
+
