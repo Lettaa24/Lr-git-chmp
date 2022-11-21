@@ -1,0 +1,13 @@
+import matplotlib.pyplot as plt
+from scipy.interpolate import UnivariateSpline as us
+import numpy as np
+
+x = [0.6,0.9,1.3,1.8,2.2]
+y = [0.53,1.68,3.65,2.13,4.37]
+
+spl = us(x, y) 
+xs = np.linspace(0, 4.5, 1000)
+
+plt.plot(x,y,'ro', xs, spl(xs), 'b')
+
+plt.show()
