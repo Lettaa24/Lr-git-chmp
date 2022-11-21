@@ -1,23 +1,65 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31729.503
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Lr11_chmp", "Lr11_chmp.pyproj", "{06AAD2F2-1D52-44E1-9229-9C73143089A1}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{06AAD2F2-1D52-44E1-9229-9C73143089A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{06AAD2F2-1D52-44E1-9229-9C73143089A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A7802079-180C-4BF3-B14D-511B6278D498}
-	EndGlobalSection
-EndGlobal
+import numpy as np 
+import matplotlib.pyplot as plt 
+
+def task_1():
+
+    def func(x):
+        return x**2*np.tan(x)
+    print ('Метод найменших квадратів')
+
+    x = np.array ([i*0.1 for i in range(1, 11 )]) 
+    y = np.array([func(x)])
+    print ('x=',x)
+    print ('y=',y)
+
+    mean_x = np.mean(x) 
+    mean_x2 = np.mean(x**2)
+    mean_y = np.mean(y) 
+    mean_xy = np.mean (x*y)
+
+    print('mean_x=', mean_x, '\n', 'mean_y=', mean_y, '\n', 'mean_xy=', mean_xy, '\n', 'mean_x2=',mean_x2)
+
+    a1 = (mean_xy - mean_x*mean_y)/(mean_x2-(np.mean(x))**2)
+    a0 = mean_y - (a1* mean_x) 
+
+    print('Coefficients', 'a0=', round(a0,4), 'a1=', round(a1,4), '\n') 
+
+    plt.plot(x, a0*x + a1, 'r', label='Fitted line') 
+    plt.scatter(x, y,  label='Scatter Plot') 
+    plt.title('M N K')
+    plt.xlabel('x') 
+    plt.ylabel('y') 
+    plt.legend() 
+
+    plt.show()
+
+def task_2():
+
+    def func(x):
+        return x**2*np.tan(x)
+    print ('Метод найменших квадратів використанням  np.linalg.lstsq()')
+
+    x = np.linspace(0.1, 1, 10)
+    y = np.array(func(x))
+    print ('x =', x)
+    print ('y =', y)
+
+    a = np.vstack([x, np.ones(len(x))]).T
+    m,c = np.linalg.lstsq(a, y, rcond=None)[0]
+
+    print('a0 = ', c)
+    print('a1 = ', m)
+    print('y = ', c, ' + ', m, 'x', sep = '')
+
+    plt.plot(x, m*x+c, 'r', label = 'Апроксимована лінія')
+    plt.plot(x, y, 'o', label = 'Задані точки')
+    plt.title('М Н К')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.legend()
+    plt.show()
+
+
+if __name__ == '__main__':
+    task_1()
+    task_2()
